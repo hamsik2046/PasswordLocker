@@ -19,7 +19,7 @@ import android.view.View.OnClickListener;
 
 public class MainActivity extends Activity implements OnClickListener{
 	
-	private ButtonFloat buttonFloat;
+	private ButtonFloat buttonFloat;  //DZT的button
 	private SharedPreferences data;
 	private Boolean isLogined = false;
 	private String password;
