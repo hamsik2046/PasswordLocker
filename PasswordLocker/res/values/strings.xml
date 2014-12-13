@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">PasswordLocker</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    
+    <!-- 首页 -->
+    <string name="set_enter_password">Set Login Password</string>
+    <string name="enter_password">enter password</string>
+    <string name="confirm_enter_password">confirm password</string>
+    <string name="login">login</string>
+    
+    <!-- 设置 -->
+    <string name="confirm">confirm</string>
+
+</resources>
