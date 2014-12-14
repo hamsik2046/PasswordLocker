@@ -4,6 +4,7 @@
     <string name="app_name">PasswordLocker</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_category">Category</string>
     
     <!-- 首页 -->
     <string name="set_enter_password">Set Login Password</string>
