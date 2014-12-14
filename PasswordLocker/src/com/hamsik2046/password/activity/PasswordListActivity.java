@@ -38,10 +38,9 @@ public class PasswordListActivity extends Activity {
 	 private RecyclerView.Adapter mAdapter;  
 	 private RecyclerView.LayoutManager mLayoutManager;  
 	 private List<Account> mData;
-	 private final static int STATE_PULL_UP = 0x12;
-	 private final static int STATA_PULL_DOWN = 0x13; 
-	 private final static int STATE_IDEL = 0x14;
-	 private int scroll_state;
+	 private int CLICK_STATE; //判断当前事件状态，决定是否执行onclick
+	 private final int STATE_DRAG_BUTTON = 0x12;
+	 private final int STATE_CLICK_BUTTON = 0x13;
 	 private ButtonFloat addAccount;
 	 private int screenWidth;
 	 private int screenHeight;
@@ -103,13 +102,15 @@ public class PasswordListActivity extends Activity {
     }
     
     private class MyOnTouchListener implements OnTouchListener{
+    	int firstDownX, firstDownY;
         int lastX,lastY;
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 			int ea=event.getAction(); 
 			switch(ea){  
 	          case MotionEvent.ACTION_DOWN:             
-	             
+	           firstDownX=(int)event.getRawX();
+	           firstDownY=(int)event.getRawY();
 	           lastX=(int)event.getRawX();//获取触摸事件触摸位置的原始X坐标  
 	           lastY=(int)event.getRawY();             
 	           break;  
@@ -150,6 +151,13 @@ public class PasswordListActivity extends Activity {
 	           v.postInvalidate();             
 	           break;  
 	          case MotionEvent.ACTION_UP:  
+	           int newX = (int) event.getRawX();
+	           int newY = (int) event.getRawY();
+	           if (newX==firstDownX && newY==firstDownY) {
+				   CLICK_STATE = STATE_CLICK_BUTTON;
+			   }else {
+				   CLICK_STATE = STATE_DRAG_BUTTON;
+			   }
 	           break;            
 	          }  
 	    return false;
@@ -161,9 +169,10 @@ public class PasswordListActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			Intent addIntent = new Intent(PasswordListActivity.this,AddAccountActivity.class);
-			startActivity(addIntent);
-					
+			if (CLICK_STATE == STATE_CLICK_BUTTON) {
+				Intent addIntent = new Intent(PasswordListActivity.this,AddAccountActivity.class);
+				startActivity(addIntent);
+			}
 		}
     	
     }

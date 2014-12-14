@@ -28,6 +28,7 @@
             android:name="com.hamsik2046.password.activity.LoginActivity"/>
         <activity
             android:name="com.hamsik2046.password.activity.PasswordListActivity"/>
+        <activity android:name="com.hamsik2046.password.activity.AddAccountActivity"/>
     </application>
 
 </manifest>
