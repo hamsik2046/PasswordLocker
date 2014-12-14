@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.widget.Toast;
 
-import com.hamsik2046.password.MainActivity;
 import com.hamsik2046.password.R;
 import com.hamsik2046.password.view.SingleInputFormActivity;
 import com.hamsik2046.password.view.Step;
@@ -46,7 +45,7 @@ public class SetPasswordActivity extends SingleInputFormActivity {
 		} else {
 			finish();
 			Intent intent = new Intent(SetPasswordActivity.this,
-					MainActivity.class);
+					SetPasswordActivity.class);
 			startActivity(intent);
 			Toast.makeText(SetPasswordActivity.this, "twice input not equal",
 					Toast.LENGTH_SHORT).show();
