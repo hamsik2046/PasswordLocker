@@ -25,5 +25,26 @@
 <!--     <item name="colorPrimaryDark">@color/my_awesome_darker_red</item> -->
 <!--     The rest of your attributes -->
 <!-- </style> -->
+
+<!--     <style name="Theme.MyTheme" parent="Theme.AppCompat.Light"> -->
+<!--         <item name="">@style/MyTheme.SingleInputFormStyle</item>reference -->
+<!--     </style> -->
+    
+<!--     <style name="MyTheme.SingleInputFormStyle" parent="SingleInputFormStyle"> -->
+<!--         <item name="sifButtonNextIcon">@drawable/ic_action_next</item>drawable -->
+<!--         <item name="sifButtonFinishIcon">@drawable/ic_action_finish</item>drawable -->
+
+<!--         <item name="sifTextFieldBackgroundColor">#992044</item>color -->
+<!--         <item name="sifProgressBackgroundColor">#67132B</item>color -->
+<!--         <item name="sifEditTextBackgroundColor">#a94054</item>color -->
+
+<!--         <item name="sifTitleTextColor">#561529</item>color -->
+<!--         <item name="sifDetailsTextColor">#561529</item>color -->
+<!--         <item name="sifInputTextColor">@android:color/white</item>color -->
+<!--         <item name="sifErrorTextColor">#561529</item> -->
+
+<!--         <item name="sifBetterPickerStyle">@style/AppTheme.BetterPickerTheme</item>reference -->
+<!--     </style> -->
+    
     
 </resources>

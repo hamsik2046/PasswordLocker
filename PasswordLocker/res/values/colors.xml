@@ -2,4 +2,13 @@
 <resources>
     <color name="background_grey">#E5E5E5</color>
     <color name="green_main">#00ACA4</color>
+    
+    <!-- singleInput -->
+    <color name="default_text_field_background_color">#5a97af</color>
+	<color name="default_progress_background_color">#437181</color>
+	<color name="default_edit_text_background_color">#437181</color>
+	<color name="default_title_text_color">#3b606f</color>
+	<color name="default_details_text_color">#3b606f</color>
+	<color name="default_input_text_color">@android:color/white</color>
+	<color name="default_error_text_color">#3b606f</color>
 </resources>

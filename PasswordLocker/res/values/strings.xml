@@ -13,5 +13,15 @@
     
     <!-- 设置 -->
     <string name="confirm">confirm</string>
-
+    
+    <!-- singleInput -->
+    <string name="date_format">%3$d.%2$d.%1$d</string>
+	<string name="page_number">%1$d/%2$d</string>
+	<string name="next_step">Next step</string>
+	<string name="password_set">Set Login Password</string>
+	<string name="password_confirm">Confirm Login Password</string>
+	<string name="password_error"></string>
+	<string name="password_details">This password is used to confirm your identity to open the app.</string>
+    <string name="password_login">Login PasswordLocker</string>
+	
 </resources>
