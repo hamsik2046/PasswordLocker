@@ -609,6 +609,10 @@ containing a value of this type.
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
         public static final int customNavigationLayout=0x7f01006b;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int deleteButtonRes=0x7f0100d1;
         /**  Whether this spinner should mark child views as enabled/disabled when
              the spinner itself is enabled/disabled. 
          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
@@ -761,6 +765,14 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int hideOnContentScroll=0x7f010071;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int hintText=0x7f0100cf;
         /**  Specifies a drawable to use for the 'home as up' indicator. 
          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -1122,6 +1134,18 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int queryHint=0x7f010086;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int rightLabel=0x7f0100d0;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int rightLabelStyle=0x7f0100d2;
         /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
 Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
 in (inches), mm (millimeters).
@@ -2064,6 +2088,8 @@ containing a value of this type.
         public static final int shadow_right=0x7f02004e;
         public static final int sprite_check=0x7f02004f;
         public static final int text_field_background_single_input_form=0x7f020050;
+        public static final int text_field_clear_btn=0x7f020051;
+        public static final int textfield_bg=0x7f020052;
     }
     public static final class id {
         public static final int action_bar=0x7f0a0031;
@@ -4144,6 +4170,73 @@ containing a value of this type.
           @attr name com.hamsik2046.password:topBottomBarArrowSize
         */
         public static final int DrawerArrowToggle_topBottomBarArrowSize = 4;
+        /** Attributes that can be used with a EditTextWithDeleteButton.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #EditTextWithDeleteButton_deleteButtonRes com.hamsik2046.password:deleteButtonRes}</code></td><td></td></tr>
+           <tr><td><code>{@link #EditTextWithDeleteButton_hintText com.hamsik2046.password:hintText}</code></td><td></td></tr>
+           <tr><td><code>{@link #EditTextWithDeleteButton_rightLabel com.hamsik2046.password:rightLabel}</code></td><td></td></tr>
+           <tr><td><code>{@link #EditTextWithDeleteButton_rightLabelStyle com.hamsik2046.password:rightLabelStyle}</code></td><td></td></tr>
+           </table>
+           @see #EditTextWithDeleteButton_deleteButtonRes
+           @see #EditTextWithDeleteButton_hintText
+           @see #EditTextWithDeleteButton_rightLabel
+           @see #EditTextWithDeleteButton_rightLabelStyle
+         */
+        public static final int[] EditTextWithDeleteButton = {
+            0x7f0100cf, 0x7f0100d0, 0x7f0100d1, 0x7f0100d2
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.hamsik2046.password.R.attr#deleteButtonRes}
+          attribute's value can be found in the {@link #EditTextWithDeleteButton} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name com.hamsik2046.password:deleteButtonRes
+        */
+        public static final int EditTextWithDeleteButton_deleteButtonRes = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.hamsik2046.password.R.attr#hintText}
+          attribute's value can be found in the {@link #EditTextWithDeleteButton} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.hamsik2046.password:hintText
+        */
+        public static final int EditTextWithDeleteButton_hintText = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.hamsik2046.password.R.attr#rightLabel}
+          attribute's value can be found in the {@link #EditTextWithDeleteButton} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.hamsik2046.password:rightLabel
+        */
+        public static final int EditTextWithDeleteButton_rightLabel = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.hamsik2046.password.R.attr#rightLabelStyle}
+          attribute's value can be found in the {@link #EditTextWithDeleteButton} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name com.hamsik2046.password:rightLabelStyle
+        */
+        public static final int EditTextWithDeleteButton_rightLabelStyle = 3;
         /** Attributes that can be used with a LinearLayoutCompat.
            <p>Includes the following attributes:</p>
            <table>

@@ -90,6 +90,7 @@ int attr contentPaddingLeft 0x7f010007
 int attr contentPaddingRight 0x7f010008
 int attr contentPaddingTop 0x7f010009
 int attr customNavigationLayout 0x7f01006b
+int attr deleteButtonRes 0x7f0100d1
 int attr disableChildrenWhenDisabled 0x7f010083
 int attr displayOptions 0x7f010061
 int attr divider 0x7f010067
@@ -108,6 +109,7 @@ int attr gapBetweenBars 0x7f0100a7
 int attr goIcon 0x7f010088
 int attr height 0x7f01000c
 int attr hideOnContentScroll 0x7f010071
+int attr hintText 0x7f0100cf
 int attr homeAsUpIndicator 0x7f010037
 int attr homeLayout 0x7f01006c
 int attr icon 0x7f010065
@@ -152,6 +154,8 @@ int attr progressBarStyle 0x7f01006d
 int attr prompt 0x7f010080
 int attr queryBackground 0x7f01008d
 int attr queryHint 0x7f010086
+int attr rightLabel 0x7f0100d0
+int attr rightLabelStyle 0x7f0100d2
 int attr ringWidth 0x7f0100bb
 int attr rippleBorderRadius 0x7f0100c2
 int attr rippleColor 0x7f0100b4
@@ -437,6 +441,8 @@ int drawable shadow_down 0x7f02004d
 int drawable shadow_right 0x7f02004e
 int drawable sprite_check 0x7f02004f
 int drawable text_field_background_single_input_form 0x7f020050
+int drawable text_field_clear_btn 0x7f020051
+int drawable textfield_bg 0x7f020052
 int id action_bar 0x7f0a0031
 int id action_bar_activity_content 0x7f0a0003
 int id action_bar_container 0x7f0a0030
@@ -952,6 +958,11 @@ int styleable DrawerArrowToggle_middleBarArrowSize 5
 int styleable DrawerArrowToggle_spinBars 1
 int styleable DrawerArrowToggle_thickness 7
 int styleable DrawerArrowToggle_topBottomBarArrowSize 4
+int[] styleable EditTextWithDeleteButton { 0x7f0100cf, 0x7f0100d0, 0x7f0100d1, 0x7f0100d2 }
+int styleable EditTextWithDeleteButton_deleteButtonRes 2
+int styleable EditTextWithDeleteButton_hintText 0
+int styleable EditTextWithDeleteButton_rightLabel 1
+int styleable EditTextWithDeleteButton_rightLabelStyle 3
 int[] styleable LinearLayoutCompat { 0x010100af, 0x010100c4, 0x01010126, 0x01010127, 0x01010128, 0x7f010067, 0x7f010092, 0x7f010093, 0x7f010094 }
 int styleable LinearLayoutCompat_android_baselineAligned 2
 int styleable LinearLayoutCompat_android_baselineAlignedChildIndex 3
