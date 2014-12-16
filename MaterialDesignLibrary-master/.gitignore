@@ -10,7 +10,7 @@
 
 # Generated files
 bin/
-gen/
+
 
 # Gradle files
 .gradle/
@@ -27,3 +27,4 @@ proguard/
 
 # Mac Files
 *.DS_Store
+
