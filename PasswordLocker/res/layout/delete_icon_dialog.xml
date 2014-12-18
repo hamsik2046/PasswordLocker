@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:background="@color/green_main"
+        android:gravity="center"
+        android:text="删除账号"
+        android:textColor="#ffffff"
+        android:textSize="16sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:padding="25dp"
+        android:gravity="center"
+        android:text="确定删除当前账号记录吗？"
+        android:textSize="14sp"
+        android:textColor="#000000"/>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:orientation="horizontal" >
+
+            <com.gc.materialdesign.views.ButtonFlat
+                android:id="@+id/confirm_delete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@color/green_main"
+                android:text="确认"
+                android:textColor="#ffffff" />
+
+            <com.gc.materialdesign.views.ButtonFlat
+                android:id="@+id/cancel_delete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@color/green_main"
+                android:text="取消"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+    
+
+</LinearLayout>
