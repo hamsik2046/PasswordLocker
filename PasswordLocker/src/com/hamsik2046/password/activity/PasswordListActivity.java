@@ -13,6 +13,7 @@ import com.hamsik2046.password.dao.AccountDao;
 import com.hamsik2046.password.dao.DaoMaster;
 import com.hamsik2046.password.dao.DaoSession;
 import com.hamsik2046.password.dao.DaoMaster.OpenHelper;
+import com.hamsik2046.password.dialog.ChooseOperationDialog;
 import com.hamsik2046.password.dialog.DeleteAccoutDialog;
 
 import android.R.integer;
@@ -116,7 +117,9 @@ public class PasswordListActivity extends Activity {
 			public void onItemLongClick(View view, int position) {
 				Account account = mData.get(position);
 				if (account != null) {
-					new DeleteAccoutDialog(PasswordListActivity.this,account,deleteDialogHandler).show();
+					new ChooseOperationDialog(PasswordListActivity.this, 
+							chooseOperationDialogHandler, account).show();
+//					new DeleteAccoutDialog(PasswordListActivity.this,account,deleteDialogHandler).show();
 				}
 			}
 		});
@@ -224,7 +227,7 @@ public class PasswordListActivity extends Activity {
 
 	}
 
-	public Handler deleteDialogHandler = new Handler() {
+	public Handler chooseOperationDialogHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case Constant.PASSWORD_ACTIVITY_UPDATE_LIST_DATA:

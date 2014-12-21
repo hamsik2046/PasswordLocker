@@ -24,5 +24,8 @@
 	<string name="password_error"></string>
 	<string name="password_details">This password is used to confirm your identity to open the app.</string>
     <string name="password_login">Login PasswordLocker</string>
+    <string name="please_choose_operation">please choose operation</string>
+    <string name="edit">edit</string>
+    <string name="delete">delete</string>
 	
 </resources>

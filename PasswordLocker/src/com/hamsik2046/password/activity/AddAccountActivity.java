@@ -53,6 +53,8 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 	private OpenHelper helper;
 	private DaoSession daoSession;
 	private AccountDao accountDao;
+	private Boolean isFromEdit = false;
+	private Account editAccount;
 	
 
 
@@ -62,6 +64,7 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_account);
 		initView();
+		initDataIfFromEdit();
 		
 	}
 	
@@ -74,11 +77,13 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 	
 	private void initDB(){
 		//init database
-    	helper = new DaoMaster.DevOpenHelper(AddAccountActivity.this, "account_db", null);
-    	db = helper.getWritableDatabase();
-    	daoMaster = new DaoMaster(db);
-    	daoSession = daoMaster.newSession();
-    	accountDao = daoSession.getAccountDao();
+		if (helper == null) {
+			helper = new DaoMaster.DevOpenHelper(AddAccountActivity.this, "account_db", null);
+	    	db = helper.getWritableDatabase();
+	    	daoMaster = new DaoMaster(db);
+	    	daoSession = daoMaster.newSession();
+	    	accountDao = daoSession.getAccountDao();
+		}
 	}
 	
 	private void initView(){
@@ -113,6 +118,20 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 		chooseDirectory = (ButtonFlat) findViewById(R.id.pick_from_phone);
 		chooseDirectory.setOnClickListener(this);
 	}
+	
+	private void initDataIfFromEdit(){
+		Intent intent = getIntent();
+		if (intent.hasExtra("from")) {
+			isFromEdit = true;
+			editAccount = (Account) intent.getExtras().get("account");
+			if (editAccount != null) {
+				etUsername.setText(editAccount.getUsername());
+				etPassword.setText(editAccount.getPassword());
+				etRemarks.setText(editAccount.getRemark());
+			}
+			
+		}
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -131,14 +150,25 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 				Toast.makeText(AddAccountActivity.this, "账号和密码为必填项哦~！",
 						Toast.LENGTH_SHORT).show();
 			}else {
-				Account account = new Account();
-				account.setPassword(mPassword);
-				account.setUsername(mUsername);
-				account.setRemark(mRemarks);
-				account.setId(System.currentTimeMillis());
-				account.setImg_path(imgPath==null?"":imgPath);
-				account.setCategory("app");
-		    	accountDao.insert(account);
+				if (isFromEdit) {
+					Account account = new Account();
+					account.setPassword(mPassword);
+					account.setUsername(mUsername);
+					account.setRemark(mRemarks);
+					account.setId(editAccount.getId());
+					account.setImg_path(imgPath==null?"":imgPath);
+					account.setCategory("app");
+			    	accountDao.update(account);
+				}else {
+					Account account = new Account();
+					account.setPassword(mPassword);
+					account.setUsername(mUsername);
+					account.setRemark(mRemarks);
+					account.setId(System.currentTimeMillis());
+					account.setImg_path(imgPath==null?"":imgPath);
+					account.setCategory("app");
+			    	accountDao.insert(account);
+				}
 		    	finish();
 			}
 			break;
