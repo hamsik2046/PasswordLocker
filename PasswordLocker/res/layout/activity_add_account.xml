@@ -15,112 +15,118 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="fill_parent">
-    <RelativeLayout
-        android:id="@+id/add_account_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="30dp" >
+        android:layout_height="fill_parent" >
 
-        <ImageView
-            android:id="@+id/choose_icon_img"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/choose_icon" />
-
-        <TextView
-            android:id="@+id/choose_category_spinner"
+        <RelativeLayout
+            android:id="@+id/add_account_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/choose_icon_img"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="请选择分类：" />
+            android:layout_height="match_parent"
+            android:padding="30dp" >
 
-        <EditText
-            android:id="@+id/et_username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/choose_category_spinner"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:hint="username"
-            android:singleLine="true" />
+            <ImageView
+                android:id="@+id/choose_icon_img"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/choose_icon" />
 
-        <EditText
-            android:id="@+id/et_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/et_username"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:hint="password"
-            android:singleLine="true" />
+            <com.gc.materialdesign.views.ButtonFlat
+                android:id="@+id/choose_category_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/choose_icon_img"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/green_main"
+                android:text="@string/choose_caterogy"
+                android:textColor="#ffffff" />
 
-        <EditText
-            android:id="@+id/et_remark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/et_password"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:hint="remarks"
-            android:maxLength="140"
-            android:singleLine="false" />
+            <EditText
+                android:id="@+id/et_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/choose_category_btn"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:hint="username"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_username"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:hint="password"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/et_remark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_password"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:hint="remarks"
+                android:maxLength="140"
+                android:singleLine="false" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal" >
+
+                <com.gc.materialdesign.views.ButtonFlat
+                    android:id="@+id/cancel_add"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/green_main"
+                    android:text="Cancel"
+                    android:textColor="#ffffff" />
+
+                <com.gc.materialdesign.views.ButtonFlat
+                    android:id="@+id/confirm_add"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/green_main"
+                    android:text="Confirm"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/pick_img_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="horizontal" >
+            android:layout_gravity="bottom"
+            android:background="#80000000"
+            android:orientation="vertical"
+            android:padding="15dp"
+            android:visibility="gone" >
 
             <com.gc.materialdesign.views.ButtonFlat
-                android:id="@+id/cancel_add"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:background="@color/green_main"
-                android:text="Cancel"
-                android:textColor="#ffffff" />
-
-            <com.gc.materialdesign.views.ButtonFlat
-                android:id="@+id/confirm_add"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@color/green_main"
-                android:text="Confirm"
-                android:textColor="#ffffff" />
-        </LinearLayout>
-    </RelativeLayout>
-    <LinearLayout 
-        android:id="@+id/pick_img_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:orientation="vertical"
-        android:layout_gravity="bottom"
-        android:background="#80000000"
-        android:visibility="gone">
-        <com.gc.materialdesign.views.ButtonFlat
                 android:id="@+id/pick_from_camera"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/green_main"
                 android:text="拍照"
                 android:textColor="#ffffff" />
-        <com.gc.materialdesign.views.ButtonFlat
+
+            <com.gc.materialdesign.views.ButtonFlat
                 android:id="@+id/pick_from_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -128,7 +134,7 @@
                 android:background="@color/green_main"
                 android:text="从相册选择"
                 android:textColor="#ffffff" />
-    </LinearLayout>
+        </LinearLayout>
     </FrameLayout>
 
 </LinearLayout>

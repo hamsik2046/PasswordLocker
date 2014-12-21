@@ -5,6 +5,7 @@ import java.util.Map;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.hamsik2046.password.bean.Account;
+import com.hamsik2046.password.bean.Category;
 
 import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.AbstractDaoSession;
@@ -21,8 +22,10 @@ import de.greenrobot.dao.internal.DaoConfig;
 public class DaoSession extends AbstractDaoSession {
 
     private final DaoConfig accountDaoConfig;
+    private final DaoConfig categoryDaoConfig;
 
     private final AccountDao accountDao;
+    private final CategoryDao categoryDao;
 
     public DaoSession(SQLiteDatabase db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
@@ -31,17 +34,27 @@ public class DaoSession extends AbstractDaoSession {
         accountDaoConfig = daoConfigMap.get(AccountDao.class).clone();
         accountDaoConfig.initIdentityScope(type);
 
+        categoryDaoConfig = daoConfigMap.get(CategoryDao.class).clone();
+        categoryDaoConfig.initIdentityScope(type);
+
         accountDao = new AccountDao(accountDaoConfig, this);
+        categoryDao = new CategoryDao(categoryDaoConfig, this);
 
         registerDao(Account.class, accountDao);
+        registerDao(Category.class, categoryDao);
     }
     
     public void clear() {
         accountDaoConfig.getIdentityScope().clear();
+        categoryDaoConfig.getIdentityScope().clear();
     }
 
     public AccountDao getAccountDao() {
         return accountDao;
+    }
+
+    public CategoryDao getCategoryDao() {
+        return categoryDao;
     }
 
 }

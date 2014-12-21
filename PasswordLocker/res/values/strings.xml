@@ -27,5 +27,9 @@
     <string name="please_choose_operation">please choose operation</string>
     <string name="edit">edit</string>
     <string name="delete">delete</string>
+    <string name="add_category">Add Category</string>
+    <string name="input_category_name">input category name</string>
+    <string name="add">Add</string>
+    <string name="choose_caterogy">Choose Category</string>
 	
 </resources>

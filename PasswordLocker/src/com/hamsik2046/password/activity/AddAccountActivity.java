@@ -1,5 +1,9 @@
 package com.hamsik2046.password.activity;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,23 +17,33 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonFlat;
+import com.hamsik2046.password.Constant;
 import com.hamsik2046.password.R;
 import com.hamsik2046.password.bean.Account;
+import com.hamsik2046.password.bean.Category;
 import com.hamsik2046.password.dao.AccountDao;
+import com.hamsik2046.password.dao.CategoryDao;
 import com.hamsik2046.password.dao.DaoMaster;
 import com.hamsik2046.password.dao.DaoSession;
 import com.hamsik2046.password.dao.DaoMaster.OpenHelper;
+import com.hamsik2046.password.dialog.AddCategoryDialog;
+import com.hamsik2046.password.dialog.ChooseCategoryDialog;
 import com.hamsik2046.password.dialog.ChooseIconDialog;
 
 public class AddAccountActivity extends Activity implements OnClickListener{
-	
+
+	private ButtonFlat chooseCategory;
 	private Toolbar toolbar;
 	private ImageView imageView;
 	private EditText etUsername;
@@ -53,6 +67,7 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 	private OpenHelper helper;
 	private DaoSession daoSession;
 	private AccountDao accountDao;
+	private CategoryDao categoryDao;
 	private Boolean isFromEdit = false;
 	private Account editAccount;
 	
@@ -65,6 +80,7 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 		setContentView(R.layout.activity_add_account);
 		initView();
 		initDataIfFromEdit();
+		
 		
 	}
 	
@@ -83,6 +99,7 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 	    	daoMaster = new DaoMaster(db);
 	    	daoSession = daoMaster.newSession();
 	    	accountDao = daoSession.getAccountDao();
+	    	categoryDao = daoSession.getCategoryDao();
 		}
 	}
 	
@@ -117,7 +134,22 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 		
 		chooseDirectory = (ButtonFlat) findViewById(R.id.pick_from_phone);
 		chooseDirectory.setOnClickListener(this);
+		
+		chooseCategory = (ButtonFlat) findViewById(R.id.choose_category_btn);
+		chooseCategory.setOnClickListener(this);
 	}
+	
+//	private void initSpinerData(){
+//		List<Category> categories = categoryDao.loadAll();
+//		String[] datas = new String[categories.size()+1];
+//		datas[0] = "Choose Category:";
+//		for (int i = 0; i < categories.size(); i++) {
+//			datas[i+1] = categories.get(i).getCategory();
+//		}
+//		ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddAccountActivity.this,
+//				android.R.layout.simple_spinner_item, datas);
+//		chooseCategorySp.setAdapter(adapter);
+//	}
 	
 	private void initDataIfFromEdit(){
 		Intent intent = getIntent();
@@ -128,6 +160,7 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 				etUsername.setText(editAccount.getUsername());
 				etPassword.setText(editAccount.getPassword());
 				etRemarks.setText(editAccount.getRemark());
+				chooseCategory.setText(editAccount.getCategory());
 			}
 			
 		}
@@ -157,7 +190,7 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 					account.setRemark(mRemarks);
 					account.setId(editAccount.getId());
 					account.setImg_path(imgPath==null?"":imgPath);
-					account.setCategory("app");
+					account.setCategory(chooseCategory.getTextView().getText()+"");
 			    	accountDao.update(account);
 				}else {
 					Account account = new Account();
@@ -166,7 +199,7 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 					account.setRemark(mRemarks);
 					account.setId(System.currentTimeMillis());
 					account.setImg_path(imgPath==null?"":imgPath);
-					account.setCategory("app");
+					account.setCategory(chooseCategory.getTextView().getText()+"");
 			    	accountDao.insert(account);
 				}
 		    	finish();
@@ -198,9 +231,24 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 			intent2.putExtra("noFaceDetection", true);
 			startActivityForResult(intent2, GET_PHOTO_FROM_DIRECTORY);
 			break;
+		case R.id.choose_category_btn:
+			new ChooseCategoryDialog(AddAccountActivity.this, chooseCategoryDialogHandler).show();
+			break;
 		}
 		
 	}
+	
+	public Handler chooseCategoryDialogHandler = new Handler(){
+		public void handleMessage(Message msg){
+			switch (msg.what) {
+			case Constant.UPDATE_CHOOSE_CATEGORY_BUTTON_TEXT:
+				String category = (String) msg.obj;
+				chooseCategory.setText(category);
+				break;
+
+			}
+		}
+	};
 	
 	public Handler iconDialogHandler = new Handler(){
 		public void handleMessage(Message msg){
@@ -258,6 +306,18 @@ public class AddAccountActivity extends Activity implements OnClickListener{
     	daoSession = null;
     	daoMaster = null;
     	accountDao = null;
+    	categoryDao = null;
 	}
+	
+	public Handler addCategoryDialogHandler = new Handler(){
+		public void handleMessage(Message msg){
+			switch (msg.what) {
+			case Constant.SET_NEW_CATEGORY_ON_PROMPT:
+				
+				break;
+
+			}
+		}
+	};
 	
 }
