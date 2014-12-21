@@ -11,5 +11,10 @@ public class Constant {
 	
 	//选择分类后，点击已有的分类后，刷新添加账户的分类信息
 	public static final int UPDATE_CHOOSE_CATEGORY_BUTTON_TEXT = 0x16;
+	
+	//使用相机拍照后截取图片
+	public static final int CROP_FROM_CAMERA = 0x17;
+	
+	
 
 }

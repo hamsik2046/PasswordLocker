@@ -40,6 +40,8 @@ public class MyRecycleViewAdapter extends RecyclerView.Adapter<MyViewHolder> {
 		if (list.get(position).getImg_path().equals("")) {
 			holder.mIcon.setImageBitmap(BitmapFactory.
 					decodeResource(context.getResources(), R.drawable.default_icon));
+		}else {
+			holder.mIcon.setImageBitmap(BitmapFactory.decodeFile(list.get(position).getImg_path()));
 		}
 		holder.mUsername.setText(list.get(position).getUsername());
 		holder.mPassword.setText(list.get(position).getPassword());

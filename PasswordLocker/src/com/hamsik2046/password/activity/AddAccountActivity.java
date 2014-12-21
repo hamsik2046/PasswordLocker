@@ -1,13 +1,20 @@
 package com.hamsik2046.password.activity;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -15,6 +22,7 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -40,8 +48,9 @@ import com.hamsik2046.password.dao.DaoMaster.OpenHelper;
 import com.hamsik2046.password.dialog.AddCategoryDialog;
 import com.hamsik2046.password.dialog.ChooseCategoryDialog;
 import com.hamsik2046.password.dialog.ChooseIconDialog;
+import com.hamsik2046.password.utils.AndroidUtils;
 
-public class AddAccountActivity extends Activity implements OnClickListener{
+public class AddAccountActivity extends Activity implements OnClickListener {
 
 	private ButtonFlat chooseCategory;
 	private Toolbar toolbar;
@@ -51,9 +60,9 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 	private EditText etRemarks;
 	private ButtonFlat cancel;
 	private ButtonFlat confirm;
-	private LinearLayout pickImgLayout; //启动相机拍照还是从本地相册选择图片布局
-	private ButtonFlat chooseCamera; //启动相机拍照获取图片button
-	private ButtonFlat chooseDirectory; //打开本地相册选取图片button
+	private LinearLayout pickImgLayout; // 启动相机拍照还是从本地相册选择图片布局
+	private ButtonFlat chooseCamera; // 启动相机拍照获取图片button
+	private ButtonFlat chooseDirectory; // 打开本地相册选取图片button
 	private RelativeLayout add_account_layout;
 	private final int TAKE_PHOTO_WITH_DATA = 0x12;
 	private final int GET_PHOTO_FROM_DIRECTORY = 0x13;
@@ -61,7 +70,7 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 	private String mPassword = null;
 	private String mRemarks = null;
 	private String imgPath = null;
-	//数据库操作相关类
+	// 数据库操作相关类
 	private SQLiteDatabase db;
 	private DaoMaster daoMaster;
 	private OpenHelper helper;
@@ -70,8 +79,6 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 	private CategoryDao categoryDao;
 	private Boolean isFromEdit = false;
 	private Account editAccount;
-	
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,30 +87,30 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 		setContentView(R.layout.activity_add_account);
 		initView();
 		initDataIfFromEdit();
-		
-		
+
 	}
-	
+
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
 		initDB();
 	}
-	
-	private void initDB(){
-		//init database
+
+	private void initDB() {
+		// init database
 		if (helper == null) {
-			helper = new DaoMaster.DevOpenHelper(AddAccountActivity.this, "account_db", null);
-	    	db = helper.getWritableDatabase();
-	    	daoMaster = new DaoMaster(db);
-	    	daoSession = daoMaster.newSession();
-	    	accountDao = daoSession.getAccountDao();
-	    	categoryDao = daoSession.getCategoryDao();
+			helper = new DaoMaster.DevOpenHelper(AddAccountActivity.this,
+					"account_db", null);
+			db = helper.getWritableDatabase();
+			daoMaster = new DaoMaster(db);
+			daoSession = daoMaster.newSession();
+			accountDao = daoSession.getAccountDao();
+			categoryDao = daoSession.getCategoryDao();
 		}
 	}
-	
-	private void initView(){
+
+	private void initView() {
 		toolbar = (Toolbar) findViewById(R.id.add_account_toobar);
 		toolbar.setNavigationIcon(R.drawable.back_arrow);
 		toolbar.setNavigationOnClickListener(new OnClickListener() {
@@ -113,8 +120,8 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 			}
 		});
 		toolbar.setTitle("New Account");
-        
-		imageView= (ImageView) findViewById(R.id.choose_icon_img);
+
+		imageView = (ImageView) findViewById(R.id.choose_icon_img);
 		imageView.setOnClickListener(this);
 		etUsername = (EditText) findViewById(R.id.et_username);
 		etPassword = (EditText) findViewById(R.id.et_password);
@@ -123,35 +130,23 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 		cancel.setOnClickListener(this);
 		confirm = (ButtonFlat) findViewById(R.id.confirm_add);
 		confirm.setOnClickListener(this);
-		
+
 		pickImgLayout = (LinearLayout) findViewById(R.id.pick_img_layout);
 
 		add_account_layout = (RelativeLayout) findViewById(R.id.add_account_layout);
 		add_account_layout.setOnClickListener(this);
-		
+
 		chooseCamera = (ButtonFlat) findViewById(R.id.pick_from_camera);
 		chooseCamera.setOnClickListener(this);
-		
+
 		chooseDirectory = (ButtonFlat) findViewById(R.id.pick_from_phone);
 		chooseDirectory.setOnClickListener(this);
-		
+
 		chooseCategory = (ButtonFlat) findViewById(R.id.choose_category_btn);
 		chooseCategory.setOnClickListener(this);
 	}
-	
-//	private void initSpinerData(){
-//		List<Category> categories = categoryDao.loadAll();
-//		String[] datas = new String[categories.size()+1];
-//		datas[0] = "Choose Category:";
-//		for (int i = 0; i < categories.size(); i++) {
-//			datas[i+1] = categories.get(i).getCategory();
-//		}
-//		ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddAccountActivity.this,
-//				android.R.layout.simple_spinner_item, datas);
-//		chooseCategorySp.setAdapter(adapter);
-//	}
-	
-	private void initDataIfFromEdit(){
+
+	private void initDataIfFromEdit() {
 		Intent intent = getIntent();
 		if (intent.hasExtra("from")) {
 			isFromEdit = true;
@@ -162,15 +157,18 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 				etRemarks.setText(editAccount.getRemark());
 				chooseCategory.setText(editAccount.getCategory());
 			}
-			
+
 		}
 	}
+	
+	private File imageFile;
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.choose_icon_img:
-			new ChooseIconDialog(AddAccountActivity.this,iconDialogHandler).show();
+			new ChooseIconDialog(AddAccountActivity.this, iconDialogHandler)
+					.show();
 			break;
 		case R.id.cancel_add:
 			finish();
@@ -182,64 +180,67 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 			if (TextUtils.isEmpty(mUsername) || TextUtils.isEmpty(mPassword)) {
 				Toast.makeText(AddAccountActivity.this, "账号和密码为必填项哦~！",
 						Toast.LENGTH_SHORT).show();
-			}else {
+			} else {
 				if (isFromEdit) {
 					Account account = new Account();
 					account.setPassword(mPassword);
 					account.setUsername(mUsername);
 					account.setRemark(mRemarks);
 					account.setId(editAccount.getId());
-					account.setImg_path(imgPath==null?"":imgPath);
-					account.setCategory(chooseCategory.getTextView().getText()+"");
-			    	accountDao.update(account);
-				}else {
+					account.setImg_path(imgPath == null ? "" : imgPath);
+					account.setCategory(chooseCategory.getTextView().getText()
+							+ "");
+					accountDao.update(account);
+				} else {
 					Account account = new Account();
 					account.setPassword(mPassword);
 					account.setUsername(mUsername);
 					account.setRemark(mRemarks);
 					account.setId(System.currentTimeMillis());
-					account.setImg_path(imgPath==null?"":imgPath);
-					account.setCategory(chooseCategory.getTextView().getText()+"");
-			    	accountDao.insert(account);
+					account.setImg_path(imgPath == null ? "" : imgPath);
+					account.setCategory(chooseCategory.getTextView().getText()
+							+ "");
+					if (accountDao == null) {
+						initDB();
+					}
+					accountDao.insert(account);
 				}
-		    	finish();
+				finish();
 			}
 			break;
 		case R.id.add_account_layout:
-			if (pickImgLayout.getVisibility()==View.VISIBLE) {
+			if (pickImgLayout.getVisibility() == View.VISIBLE) {
 				pickImgLayout.setVisibility(View.GONE);
 			}
 			break;
 		case R.id.pick_from_camera:
-			Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			 startActivityForResult(intent, TAKE_PHOTO_WITH_DATA);
+			String status = Environment.getExternalStorageState();
+			if (status.equals(Environment.MEDIA_MOUNTED)) {
+				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				startActivityForResult(intent, TAKE_PHOTO_WITH_DATA);
+			}else {
+				Toast.makeText(AddAccountActivity.this, "Please check your SDcard first~!",
+						Toast.LENGTH_SHORT).show();
+			}
+			
 			break;
 		case R.id.pick_from_phone:
-			Intent intent2 = new Intent(Intent.ACTION_GET_CONTENT,null);
-			intent2.setType("image/*");
-			intent2.putExtra("crop", "true");
-			//WIDTH 和 HEIGHT指的是截取框的宽高比例，如设WIDTH = 1，HEIGHT = 1，截取框就为正方形
-			intent2.putExtra("aspectX", 1);
-			intent2.putExtra("aspectY", 1);
-			//OUTPUT_X和OUTPUT_Y指的是图片的宽高，可根据实际需要设值
-			intent2.putExtra("outputX", 60);
-			intent2.putExtra("outputY", 60);
-			intent2.putExtra("scale", true);
-			//return-data 指是否在onActivityResult方法中返回数据
-			intent2.putExtra("return-data", true);
-			intent2.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-			intent2.putExtra("noFaceDetection", true);
-			startActivityForResult(intent2, GET_PHOTO_FROM_DIRECTORY);
+			Intent pickIntent = new Intent(Intent.ACTION_GET_CONTENT, null); 
+			pickIntent.setDataAndType(  
+	                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
+	                "image/*"); 
+			startActivityForResult(pickIntent, GET_PHOTO_FROM_DIRECTORY);
 			break;
 		case R.id.choose_category_btn:
-			new ChooseCategoryDialog(AddAccountActivity.this, chooseCategoryDialogHandler).show();
+			new ChooseCategoryDialog(AddAccountActivity.this,
+					chooseCategoryDialogHandler).show();
 			break;
 		}
-		
+
 	}
-	
-	public Handler chooseCategoryDialogHandler = new Handler(){
-		public void handleMessage(Message msg){
+
+	public Handler chooseCategoryDialogHandler = new Handler() {
+		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case Constant.UPDATE_CHOOSE_CATEGORY_BUTTON_TEXT:
 				String category = (String) msg.obj;
@@ -249,12 +250,12 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 			}
 		}
 	};
-	
-	public Handler iconDialogHandler = new Handler(){
-		public void handleMessage(Message msg){
+
+	public Handler iconDialogHandler = new Handler() {
+		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 0:
-				if (pickImgLayout.getVisibility()==View.GONE) {
+				if (pickImgLayout.getVisibility() == View.GONE) {
 					pickImgLayout.setVisibility(View.VISIBLE);
 				}
 				break;
@@ -262,29 +263,57 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 			}
 		}
 	};
+
+	
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == TAKE_PHOTO_WITH_DATA && resultCode == Activity.RESULT_OK) {
-			String sdCardState = Environment.getExternalStorageState();
-			if (sdCardState.equals(Environment.MEDIA_MOUNTED)) {
-				Bitmap picture = data.getParcelableExtra("data");
-				imageView.setImageBitmap(picture);
-				if (pickImgLayout.getVisibility() == View.VISIBLE) {
-					pickImgLayout.setVisibility(View.GONE);
+
+		switch (requestCode) {
+		case TAKE_PHOTO_WITH_DATA:
+
+			break;
+		case GET_PHOTO_FROM_DIRECTORY:
+			Intent zoomIntent= new Intent("com.android.camera.action.CROP"); 
+			zoomIntent.setDataAndType(data.getData(), "image/*");
+			zoomIntent.putExtra("crop", "true");  
+			zoomIntent.putExtra("aspectX", 1);// 裁剪框比例  
+			zoomIntent.putExtra("aspectY", 1);  
+			zoomIntent.putExtra("outputX", 150);// 输出图片大小  
+			zoomIntent.putExtra("outputY", 150);  
+			zoomIntent.putExtra("return-data", true);  
+            startActivityForResult(zoomIntent, 1111);  
+			break;
+		case Constant.CROP_FROM_CAMERA:
+
+			break;
+		case 1111:
+			Bitmap get = data.getParcelableExtra("data");
+			imageView.setImageBitmap(get);
+			FileOutputStream foutput = null;  
+			imgPath = getFilesDir().getAbsolutePath()+"/pwdlocker/"+
+					Calendar.getInstance().getTimeInMillis()+".jpg";
+			File fileDir = new File(getFilesDir().getAbsoluteFile()+"/pwdlocker/");
+			if (!fileDir.exists()) {
+				fileDir.mkdir();
+			}
+			imageFile = new File(imgPath);
+			try {
+				foutput = new FileOutputStream(imageFile);  
+				get.compress(Bitmap.CompressFormat.JPEG, 100, foutput); 
+			} catch (Exception e) {
+				// TODO: handle exception
+			}finally{
+				if (foutput!=null) {
+					try {
+						foutput.close();
+					} catch (Exception e2) {
+						// TODO: handle exception
+					}
 				}
-				
-			}else {
-				Toast.makeText(AddAccountActivity.this, "请确认已插入SD卡", Toast.LENGTH_SHORT).show();
 			}
-			
-		}else if (requestCode == GET_PHOTO_FROM_DIRECTORY && resultCode == Activity.RESULT_OK) {
-			Bitmap bitmap = data.getParcelableExtra("data");
-			imageView.setImageBitmap(bitmap);
-			if (pickImgLayout.getVisibility() == View.VISIBLE) {
-				pickImgLayout.setVisibility(View.GONE);
-			}
+			break;
 		}
 	}
 
@@ -292,32 +321,32 @@ public class AddAccountActivity extends Activity implements OnClickListener{
 		if (pickImgLayout.getVisibility() == View.VISIBLE) {
 			pickImgLayout.setVisibility(View.GONE);
 			return;
-		}else {
+		} else {
 			finish();
 		}
 	};
-	
+
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
 		helper.close();
-    	db.close();
-    	daoSession = null;
-    	daoMaster = null;
-    	accountDao = null;
-    	categoryDao = null;
+		db.close();
+		daoSession = null;
+		daoMaster = null;
+		accountDao = null;
+		categoryDao = null;
 	}
-	
-	public Handler addCategoryDialogHandler = new Handler(){
-		public void handleMessage(Message msg){
+
+	public Handler addCategoryDialogHandler = new Handler() {
+		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case Constant.SET_NEW_CATEGORY_ON_PROMPT:
-				
+
 				break;
 
 			}
 		}
 	};
-	
+
 }
