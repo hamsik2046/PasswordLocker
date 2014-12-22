@@ -269,7 +269,7 @@ public class AddAccountActivity extends Activity implements OnClickListener {
 					decodeResource(getResources(), R.drawable.default_icon));
 				}else {
 					imageView.setImageBitmap(AndroidUtils.decodeUri(AddAccountActivity.this,
-							Uri.fromFile(new File(imgPath))));
+								Uri.fromFile(new File(imgPath))));
 				}
 				break;
 
