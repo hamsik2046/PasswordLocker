@@ -1,15 +1,19 @@
 package com.hamsik2046.password.adapter;
 
+import java.io.File;
 import java.util.List;
 
 import com.hamsik2046.password.R;
 import com.hamsik2046.password.bean.Account;
+import com.hamsik2046.password.utils.AndroidUtils;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,11 +41,12 @@ public class MyRecycleViewAdapter extends RecyclerView.Adapter<MyViewHolder> {
 	@Override
 	public void onBindViewHolder(MyViewHolder holder, int position) {
 		// TODO Auto-generated method stub
-		if (list.get(position).getImg_path().equals("")) {
+		if (TextUtils.isEmpty(list.get(position).getImg_path())) {
 			holder.mIcon.setImageBitmap(BitmapFactory.
 					decodeResource(context.getResources(), R.drawable.default_icon));
 		}else {
-			holder.mIcon.setImageBitmap(BitmapFactory.decodeFile(list.get(position).getImg_path()));
+			String imagePath = list.get(position).getImg_path();
+			holder.mIcon.setImageBitmap(AndroidUtils.decodeUri(context, Uri.fromFile(new File(imagePath))));
 		}
 		holder.mUsername.setText(list.get(position).getUsername());
 		holder.mPassword.setText(list.get(position).getPassword());

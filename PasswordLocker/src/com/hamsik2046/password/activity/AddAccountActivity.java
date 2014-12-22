@@ -1,6 +1,7 @@
 package com.hamsik2046.password.activity;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -8,9 +9,11 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +22,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -70,6 +74,8 @@ public class AddAccountActivity extends Activity implements OnClickListener {
 	private String mPassword = null;
 	private String mRemarks = null;
 	private String imgPath = null;
+	private Bitmap bitmap = null;
+	private Uri imageUri = null;
 	// 数据库操作相关类
 	private SQLiteDatabase db;
 	private DaoMaster daoMaster;
@@ -95,11 +101,14 @@ public class AddAccountActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onResume();
 		initDB();
+		if (pickImgLayout.getVisibility() == View.VISIBLE) {
+			pickImgLayout.setVisibility(View.GONE);
+		}
 	}
 
 	private void initDB() {
 		// init database
-		if (helper == null) {
+		if (categoryDao == null || accountDao ==null) {
 			helper = new DaoMaster.DevOpenHelper(AddAccountActivity.this,
 					"account_db", null);
 			db = helper.getWritableDatabase();
@@ -156,6 +165,9 @@ public class AddAccountActivity extends Activity implements OnClickListener {
 				etPassword.setText(editAccount.getPassword());
 				etRemarks.setText(editAccount.getRemark());
 				chooseCategory.setText(editAccount.getCategory());
+				imgPath = editAccount.getImg_path();
+				imageView.setImageBitmap(AndroidUtils.decodeUri(AddAccountActivity.this,
+						Uri.fromFile(new File(editAccount.getImg_path()))));
 			}
 
 		}
@@ -198,11 +210,7 @@ public class AddAccountActivity extends Activity implements OnClickListener {
 					account.setRemark(mRemarks);
 					account.setId(System.currentTimeMillis());
 					account.setImg_path(imgPath == null ? "" : imgPath);
-					account.setCategory(chooseCategory.getTextView().getText()
-							+ "");
-					if (accountDao == null) {
-						initDB();
-					}
+					account.setCategory(chooseCategory.getTextView().getText()==null?"null":chooseCategory.getTextView().getText()+"");
 					accountDao.insert(account);
 				}
 				finish();
@@ -214,22 +222,13 @@ public class AddAccountActivity extends Activity implements OnClickListener {
 			}
 			break;
 		case R.id.pick_from_camera:
-			String status = Environment.getExternalStorageState();
-			if (status.equals(Environment.MEDIA_MOUNTED)) {
-				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				startActivityForResult(intent, TAKE_PHOTO_WITH_DATA);
-			}else {
-				Toast.makeText(AddAccountActivity.this, "Please check your SDcard first~!",
-						Toast.LENGTH_SHORT).show();
-			}
-			
+
 			break;
 		case R.id.pick_from_phone:
-			Intent pickIntent = new Intent(Intent.ACTION_GET_CONTENT, null); 
-			pickIntent.setDataAndType(  
-	                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
-	                "image/*"); 
-			startActivityForResult(pickIntent, GET_PHOTO_FROM_DIRECTORY);
+			Intent intent=new Intent(Intent.ACTION_GET_CONTENT);//ACTION_OPEN_DOCUMENT  
+			intent.addCategory(Intent.CATEGORY_OPENABLE);  
+			intent.setType("image/jpeg");  
+			startActivityForResult(intent, GET_PHOTO_FROM_DIRECTORY);
 			break;
 		case R.id.choose_category_btn:
 			new ChooseCategoryDialog(AddAccountActivity.this,
@@ -259,6 +258,20 @@ public class AddAccountActivity extends Activity implements OnClickListener {
 					pickImgLayout.setVisibility(View.VISIBLE);
 				}
 				break;
+			case Constant.ICON_SELECTED_UPDATE_VIEW:
+				Account accountGet = (Account) msg.obj;
+				if (bitmap!=null) {
+					bitmap.recycle();
+				}
+				imgPath = accountGet.getImg_path();
+				if (TextUtils.isEmpty(imgPath)) {
+					imageView.setImageBitmap(BitmapFactory.
+					decodeResource(getResources(), R.drawable.default_icon));
+				}else {
+					imageView.setImageBitmap(AndroidUtils.decodeUri(AddAccountActivity.this,
+							Uri.fromFile(new File(imgPath))));
+				}
+				break;
 
 			}
 		}
@@ -275,47 +288,47 @@ public class AddAccountActivity extends Activity implements OnClickListener {
 
 			break;
 		case GET_PHOTO_FROM_DIRECTORY:
-			Intent zoomIntent= new Intent("com.android.camera.action.CROP"); 
-			zoomIntent.setDataAndType(data.getData(), "image/*");
-			zoomIntent.putExtra("crop", "true");  
-			zoomIntent.putExtra("aspectX", 1);// 裁剪框比例  
-			zoomIntent.putExtra("aspectY", 1);  
-			zoomIntent.putExtra("outputX", 150);// 输出图片大小  
-			zoomIntent.putExtra("outputY", 150);  
-			zoomIntent.putExtra("return-data", true);  
-            startActivityForResult(zoomIntent, 1111);  
-			break;
-		case Constant.CROP_FROM_CAMERA:
-
-			break;
-		case 1111:
-			Bitmap get = data.getParcelableExtra("data");
-			imageView.setImageBitmap(get);
-			FileOutputStream foutput = null;  
-			imgPath = getFilesDir().getAbsolutePath()+"/pwdlocker/"+
-					Calendar.getInstance().getTimeInMillis()+".jpg";
-			File fileDir = new File(getFilesDir().getAbsoluteFile()+"/pwdlocker/");
-			if (!fileDir.exists()) {
-				fileDir.mkdir();
+			if (resultCode == RESULT_OK && data != null) {
+				cropPicture(data.getData());
 			}
-			imageFile = new File(imgPath);
-			try {
-				foutput = new FileOutputStream(imageFile);  
-				get.compress(Bitmap.CompressFormat.JPEG, 100, foutput); 
-			} catch (Exception e) {
-				// TODO: handle exception
-			}finally{
-				if (foutput!=null) {
-					try {
-						foutput.close();
-					} catch (Exception e2) {
-						// TODO: handle exception
-					}
+			
+			break;
+		case 1234:
+			if (resultCode == RESULT_OK && data != null) {
+				if (bitmap != null) {
+					bitmap.recycle();
 				}
+				bitmap = AndroidUtils.decodeUri(AddAccountActivity.this,data.getData());
+				imgPath = AndroidUtils.getPath(AddAccountActivity.this, data.getData());
+				imageView.setImageBitmap(bitmap);
 			}
 			break;
 		}
 	}
+	
+	private Bitmap decodeUriAsBitmap(Uri uri){
+		Bitmap bitmap = null;
+		try {
+			bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+		} catch (FileNotFoundException e) {
+			return null;
+		}
+		return bitmap;
+	}
+	
+	private void cropPicture(Uri uri){
+		String imagePath = AndroidUtils.getPath(AddAccountActivity.this, uri);
+		Intent cropIntent = new Intent("com.android.camera.action.CROP");
+		cropIntent.setDataAndType(Uri.fromFile(new File(imagePath)), "image/*");
+		cropIntent.putExtra("crop", "true");
+		cropIntent.putExtra("aspectX", 1);
+		cropIntent.putExtra("aspectY", 1);
+		// true to return a Bitmap, false to directly save the cropped iamge
+		cropIntent.putExtra("return-data", false);
+		cropIntent.putExtra("noFaceDetection", true);
+		startActivityForResult(cropIntent, 1234);
+	}
+	
 
 	public void onBackPressed() {
 		if (pickImgLayout.getVisibility() == View.VISIBLE) {
@@ -346,6 +359,13 @@ public class AddAccountActivity extends Activity implements OnClickListener {
 				break;
 
 			}
+		}
+	};
+	
+	protected void onDestroy() {
+		super.onDestroy();
+		if (bitmap != null) {
+			bitmap.recycle();
 		}
 	};
 

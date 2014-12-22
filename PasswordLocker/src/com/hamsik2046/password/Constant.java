@@ -15,6 +15,7 @@ public class Constant {
 	//使用相机拍照后截取图片
 	public static final int CROP_FROM_CAMERA = 0x17;
 	
-	
+	//选择icon对话框，点选icon后，返回addAccount页面，刷新icon
+	public static final int ICON_SELECTED_UPDATE_VIEW = 0x18;
 
 }
